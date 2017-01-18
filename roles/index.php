@@ -43,4 +43,59 @@ function affichertable($tab, $titre){ // permet d'afficher la table demandée
 		}
 		echo "</table>";
 	}
+	
+function affichagecolonnes($sql, $colonnes, $titre){ // permet d'afficher les colonnes du formulaire avancé
+		$conn = conn();
+		$col = colonnes();
+		$tri = $_POST['tri'];
+		$ordre = $_POST['ordre'];
+		
+		if($col != null){ // si des colonnes sont cochées
+			if($colonnes == "*")
+				$colonnes = "\*";
+			$cols = "";
+			foreach($col as $cle=>$valeur)
+				$cols = $cols.$valeur.", ";
+			$cols=trim($cols, $charlist=", ");
+			if($tri != "-----"){ // si un tri est choisi
+				if($ordre != "-----"){ // si un ordre de tri est choisi
+					$sql = preg_replace("#$colonnes#", $cols, $sql);
+					$sql = $sql." order by $tri $ordre";
+				}
+				else{
+					$sql = preg_replace("#$colonnes#", $cols, $sql);
+					$sql = $sql." order by $tri";
+				}
+			}
+			else
+				$sql = preg_replace("#$colonnes#", $cols, $sql);
+		}
+		else if($tri != "-----"){
+			if($ordre != "-----"){
+				$sql = $sql." order by $tri $ordre";
+			}
+			else
+				$sql = $sql." order by $tri";
+		}
+		$donnee = LireDonneesPDO1($conn,$sql);
+		if($donnee != null)
+			affichertable($donnee, $titre);
+		
+		echo "<hr/>";
+	}
+	
+function colonnes(){ // premet d'obtenir les colonnes à afficher
+		$i = 0;
+		$colonnes = null;
+		if(isset($_POST['colonne'])){
+			foreach($_POST["colonne"] as $val){
+				$colonnes[$i] = $val;
+				$i++;
+			}
+		}
+		if($colonnes != null)
+			return $colonnes;
+		else
+			return null;
+	}
 ?>
