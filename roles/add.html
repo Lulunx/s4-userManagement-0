@@ -1,0 +1,19 @@
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" media="screen" type="text/css" title="Header" href="header.css"/>
+		<title>Ajout role</title>
+	</head>
+	<body>
+		<form name="monFormulaire" method="post">
+			<fieldset>
+				<legend>Role</legend>
+				<br />
+				<label for="idrole">ID Role : </label><input type="text" name="idrole" id = "idrole" size="30" maxlength="50" placeholder="Saisir id" value = ""/><br />
+				<label for="rolesnom">Nom Role : </label><input type="text" name="rolesnom" id = "rolesnom" size="30" maxlength="50" placeholder="Saisir nom" value = ""/><br />
+			</fieldset>
+			<input type="submit" name="EN" value="Ajouter">
+		<?php if(!isset($_POST['EN']))
+			echo "</form>"; ?>
+	</body>
+</html>
