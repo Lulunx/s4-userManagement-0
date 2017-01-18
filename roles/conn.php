@@ -3,8 +3,7 @@ function conn(){ // permet de se connecter à la base
 	$res=false;
 	$db_username = "root";
 	$db_password = "";
-	$db = "phalcon-td0";
-	$conn=" ";
+	$db = "mysql:dbname=phalcon-td0;host=localhost";
 	try
 	{
 	  $conn = new PDO($db,$db_username,$db_password);
@@ -35,4 +34,13 @@ function AfficherDonnee($tab){ // permet d'afficher le résultat de la requête
 		echo "<br/>";
 	}
 }
+
+function VerifSelect($name, $n) // permet de garder sélectionné les listes
+		{
+		if (isset($_POST[$name]))
+		{
+		  if ( $_POST[$name] == $n) 
+			  echo "selected";
+		}
+	}  
 ?>
