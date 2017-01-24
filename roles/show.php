@@ -1,36 +1,55 @@
+<script>	
+function redir(){
+	 window.location  = "http://localhost/s4-userManagement-0/roles/index.php;
+}
+</script>
 <?php
-include ("conn.php");
-include ("show.html");
-
-echo "<PRE>";
-
-if(isset($_POST['EN'])){
-		if($_POST['roleselec'] != "-----"){
-			$roleselec = $_POST['roleselec'];
-			$conn=conn();
-			$sql = "select * from role where id = '$roleselec'";
-			$donnee = LireDonneesPDO1($conn,$sql);
-			AfficherDonnee($donnee);
-		}
+include("connection.php");
+?>
+<!DOCTYPE HTML>
+<head>
+	<meta charset = "utf-8">
+	<title>Formulaire : </title>
+</head>
+<body>
+<fieldset>
+<legend>Informations sur le rôle</legend>
+<form name = "Formulaire" method = "post">
+<?php
+echo "<label for = \"role\">Role: </label>";
+echo "<select name = \"role\" id =\"role\">";
+echo "<option value =null>----</option>";
+$db_username = "root";
+$db_password = "";
+$db = $db = "mysql:dbname=phalcon-td0;host=localhost";
+$conn = ConnecterPDO($db,$db_username,$db_password);
+$req = "select name from role";
+$tab = LireDonneesPDO1($conn,$req);
+foreach ($tab as $key){
+	foreach ($key as $key2=>$value) {
+	echo '<option value ='.$value.'>'.$value.'</option>';}
 }
+echo "</select></br>";
+?>
+</fieldset>
+<input type = "submit" size = "10" name = "EN">
+<input type = "button" size = "10" name = "Retour" value="Retour" Onclick="javascript:location.href='index.php'" ></br></hr>
+</form></body>
+</html>
 
-function listerole(){ 
-	$conn = conn(); //Est située ici et non donc consultation.php afin de pouvoir s'en servir sur insertioncoureur.php !
-	$name = "roleselec";
-	echo "<SELECT name=$name id=$name Size='1'>";
-	$sql = 'select id, name from role order by name';
-	$donnee = LireDonneesPDO1($conn,$sql);
-	echo "<OPTION value ='-----'>-----</OPTION>";
-	foreach($donnee as $ligne){
-		foreach($ligne as $cle =>$valeur){
-			if($cle == "id")
-				echo "<OPTION value = $valeur ",VerifSelect($name, $valeur);
-			elseif($cle == "name")
-				echo ">$valeur</OPTION>";
-		}
-	}
-	echo "</SELECT>";
+
+<?php
+
+ if(isset($_POST['EN'])){
+
+if (!empty($_POST['role'])){
+	$role = $_POST['role'];
 }
+$req2 = "select name, id from role where name = '$role'";
+$tab2 = LireDonneesPDO1($conn,$req2);
+AfficherDonnee2($tab2);
 
-echo "</PRE>";
+ }
+
+
 ?>

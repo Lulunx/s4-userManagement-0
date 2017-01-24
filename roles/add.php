@@ -1,37 +1,41 @@
 <?php
-include ("conn.php");
-include ("add.html");
-
-echo "<PRE>";
-
-if(isset($_POST['EN'])){
-	if($_POST['rolesnom'] != ""){
-		if($_POST['idrole'] != ""){
-			$rolesnom = $_POST['rolesnom'];
-			$idrole= $_POST['idrole'];
-			$test=verifidpasdejapris($idrole);
-			if($test==0){
-				$conn=conn();
-				$sql = "insert into role (id, name) values ($idrole, '$rolesnom')";
-				$conn->exec($sql);
-				echo "Donnée inserée !";
-			}
-			else{
-				echo "id existe déja";
-			}
-		}
-	}
-}
-
-function verifidpasdejapris($id){ 
-	$conn=conn();
-	$sql = "select count(id) from role where id = '$id'";
-	$donnee = LireDonneesPDO1($conn,$sql);
-	foreach($donnee as $ligne){
-		foreach($ligne as $cle =>$valeur)
-			return $valeur;
-	}
-}
-
-echo "</PRE>";
+include("connection.php");
 ?>
+<!DOCTYPE HTML>
+<head>
+	<meta charset = "utf-8">
+	<title>Formulaire : </title>
+</head>
+<body>
+<fieldset>
+<legend>Ajouter un rôle</legend>
+<form name = "Formulaire" method = "post">
+<label for = "id">ID role : </label><input type = "text" name = "id" size = "40">&nbsp
+<label for = "name">Nom role : </label><input type = "text" name = "name" size = "40">
+</fieldset>
+<input type = "submit" size = "10" name = "EN"></br></hr>
+</form></body>
+</html>
+
+<?php
+
+ if(isset($_POST['EN'])){
+	 
+	if(!empty($_POST['id']))
+		$id = $_POST['id'];
+	if(!empty($_POST['name']))
+		$name = $_POST['name'];
+	
+$db_username = "root";
+$db_password = "";
+$db = $db = "mysql:dbname=phalcon-td0;host=localhost";
+$conn = ConnecterPDO($db,$db_username,$db_password);
+$req = "insert into role(id,name) values ('$id','$name')";
+$tab = LireDonneesPDO1($conn,$req);
+	 
+ }
+	 
+	 
+	 
+	 
+	 
