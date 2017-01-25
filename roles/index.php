@@ -1,16 +1,28 @@
 <?php
 	include("connection.php");
-	session_start();
 	
 $db_username = "root";
 $db_password = "";
 $db = $db = "mysql:dbname=phalcon-td0;host=localhost";
 $conn = ConnecterPDO($db,$db_username,$db_password);
-$filtre = $_SESSION['filtre'];
-$tri = $_SESSION['tri'];
-$req = "SELECT name, count(idrole) from role join user on (user.idrole = role.id) $filtre group by name
+
+$filtre = "";
+if(isset($_GET['fil_nom']))
+	$filtre .= "where name like '".$_GET['fil_nom']."%'";
+
+$tri = "";
+if(isset($_GET['n_croi']))
+	$tri = "order by name";
+if(isset($_GET['n_decroi']))
+	$tri = "order by name desc";
+if(isset($_GET['nb_croi']))
+	$tri = "order by nb_user";
+if(isset($_GET['nb_decroi']))
+		$tri = "order by nb_user desc";
+
+$req = "SELECT name, count(idrole) as nb_user from role join user on (user.idrole = role.id) $filtre group by name
 UNION
-(select name, '0' from role where id not in (select idrole from user)) $tri;";
+(select name, '0' from role where id not in (select idrole from user)) $tri";
 $tab = LireDonneesPDO1($conn,$req);
 
 ?>
@@ -29,12 +41,12 @@ $tab = LireDonneesPDO1($conn,$req);
 <thead>
 <tr style=\"background-color:lightgrey;\">
 <td><b>Name</b>
-<input type="button" value="▲" onclick="$_SESSION['tri'] ="order by name"; ">
-<input type="button" value="▼" onclick="header("Refresh:0)">
+<input type="submit" value="▲" name ="n_croi" onclick="">
+<input type="submit" value="▼" name ="n_decroi" onclick="">
 </td>
 <td><b>nb User</b>
-<input type="button" value="▲">
-<input type="button" value="▼">
+<input type="submit" value="▲" name ="nb_croi">
+<input type="submit" value="▼" name ="nb_decroi">
 </td>
 <td><b>Actions</b></td>
 </thead>
@@ -51,19 +63,3 @@ AfficherDonnee($tab);
 </form>
 </body>
 </html>
-<?php
-if(isset($_GET['fil_val'])){
-	if(!empty($_GET['fil_nom'])){
-		$fil_nom = $_GET['fil_nom'];
-		$_SESSION['filtre'] = "where name like '".$fil_nom."%'";
-		unset($_GET['fil_val']);
-		//header("Refresh:0");
-
-	}
-	else{
-		$_SESSION['filtre'] ="";
-		unset($_GET['fil_val']);
-		//header("Refresh:0");
-		}
-
-}

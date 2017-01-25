@@ -1,8 +1,8 @@
 <script>	
 function supprimerDonnees(name){
-	var r = confirm("Supprimer ce rôle");
+	var r = confirm("Supprimer cette utilisateur");
 	if (r == true) {
-		 window.location  = "delete.php?nom=" + name;
+		 window.location  = "delete.php?id=" + name;
 	}
 }
 
@@ -11,7 +11,6 @@ function modifierDonnees(name){
 }
 </script>
 <?php
-
 //Fichier php (Auteur : M.Porcq) qui stocke les fonctions nécessaires aux interactions avec la base, elles ne sont pas toutes utilisées ici
 function ConnecterPDO($db,$db_username,$db_password)
 {
@@ -96,22 +95,20 @@ function LireDonneesPDO3($conn,$sql)
 //---------------------------------------------------------------------------------------------
 function AfficherDonnee($tab)
 {
-if ($tab == null)
-		return 1;
   foreach($tab as $ligne)
   {
 	 echo"<tr>";
     foreach($ligne as $cle =>$valeur)
 	{
 		echo "<td>";
-		if($cle == 'name')
+		if($cle == 'login')
 			$nbutt = $valeur;
 		echo $valeur."\t"."&nbsp";
 		echo "</td>";
+		
 	}
-			echo"<td><input type = \"button\" name = \"modifier\" value=\"...\" onclick=\"modifierDonnees('$nbutt');\">
+	echo"<td><input type = \"button\" name = \"modifier\" value=\"...\" onclick=\"modifierDonnees('$nbutt');\">
 			<input type = \"button\"  name = \"supprimer\" value= \"X\" onclick=\"supprimerDonnees('$nbutt');\" > </td>";
-
 	echo "</tr>";
   }
 }
@@ -140,20 +137,12 @@ function afficher($txt)
 //---------------------------------------------------------------------------------------------
 function AfficherDonnee2($tab)
 {
-	if ($tab == null)
-		return 1;
-	$compt = 0;
   foreach($tab as $ligne)
   {
     foreach($ligne as $cle =>$valeur)
 	{
-		if($compt == 0)
-			echo "Name : ";
-		else
-			echo " Nb_user : ";
 		//$valeur = utf8_encode($valeur);
 		echo $valeur."\t";
-	$compt++;
 
 	}
   }

@@ -1,69 +1,60 @@
 <?php
-include ("conn.php");
-include ("add.html");
-
-echo "<PRE>";
-
-if(isset($_POST['EN'])){
-	if($_POST['id'] != ""){
-		if($_POST['login'] != ""){
-			if($_POST['password'] != ""){
-				if($_POST['prenom'] != ""){
-					if($_POST['nom'] != ""){
-						if($_POST['mail'] != ""){
-							if($_POST['roleselec'] != ""){
-								$login = $_POST['login'];
-								$id= $_POST['id'];
-								$password = $_POST['password'];
-								$prenom= $_POST['prenom'];
-								$nom= $_POST['nom'];
-								$mail = $_POST['mail'];
-								$roleselec= $_POST['roleselec'];
-								$test=verifidpasdejapris($id);
-								if($test==0){
-									$conn=conn();
-									$sql = "insert into role (id, login, password, firstname, lastname, email, image, idrole) values ($id, '$login', '$password', '$prenom', '$nom', '$mail', NULL, $roleselec)";
-									$conn->exec($sql);
-									echo "Donnée inserée !";
-								}
-								else{
-									echo "id existe déja";
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-function verifidpasdejapris($id){ 
-	$conn=conn();
-	$sql = "select count(id) from user where id = '$id'";
-	$donnee = LireDonneesPDO1($conn,$sql);
-	foreach($donnee as $ligne){
-		foreach($ligne as $cle =>$valeur)
-			return $valeur;
-	}
-}
-
-function listerole(){ 
-	$conn = conn(); //Est située ici et non donc consultation.php afin de pouvoir s'en servir sur insertioncoureur.php !
-	$name = "roleselec";
-	echo "<SELECT name=$name id=$name Size='1'>";
-	$sql = 'select id, name from role order by name';
-	$donnee = LireDonneesPDO1($conn,$sql);
-	echo "<OPTION value ='-----'>-----</OPTION>";
-	foreach($donnee as $ligne){
-		foreach($ligne as $cle =>$valeur){
-			if($cle == "id")
-				echo "<OPTION value = $valeur ",VerifSelect($name, $valeur);
-			elseif($cle == "name")
-				echo ">$valeur</OPTION>";
-		}
-	}
-	echo "</SELECT>";
-}
-echo "</PRE>";
+include("connection.php");
 ?>
+<head>
+	<meta charset = "utf-8">
+	<title>Formulaire : </title>
+</head>
+<body>
+<fieldset>
+<legend>Ajouter un utilisateur</legend>
+<form name = "Formulaire" method = "post">
+<label>ID : <label><input type="text" name="id"></br>
+<label>Login : <label><input type="text" name="login"></br>
+<label>Password : <label><input type="password" name="password"></br>
+<label>First Name : <label><input type="text" name="firstname"></br>
+<label>Last Name : <label><input type="text" name="lastname"></br>
+<label>Email : <label><input type="text" name="email"></br>
+<label>Image : <label><input type="text" name="img"></br>
+<label>ID rôle : <label><input type="text" name="idr"></br>
+</fieldset>
+</br>
+<input type="submit" name="valider">
+<input type="reset" name="reinit">
+<input type = "button" size = "10" name = "Retour" value="Retour" Onclick="javascript:location.href='index.php'" ></br></hr>
+</form>
+</body>
+</html>
+<?php
+ if(isset($_POST['valider'])){
+	if(!empty($_POST['id']))
+		$id = $_POST['id'];
+	if(!empty($_POST['login']))
+		$login = $_POST['login'];
+	if(!empty($_POST['password']))
+		$password = $_POST['password'];
+	if(!empty($_POST['firstname']))
+		$firstname = $_POST['firstname'];
+	if(!empty($_POST['lastname']))
+		$lastname = $_POST['lastname'];
+	if(!empty($_POST['email']))
+		$email = $_POST['email'];
+	if(!empty($_POST['img']))
+		$img = $_POST['img'];
+	if(!empty($_POST['idr']))
+		$idr = $_POST['idr'];
+	
+$db_username = "root";
+$db_password = "";
+$db = $db = "mysql:dbname=phalcon-td0;host=localhost";
+$conn = ConnecterPDO($db,$db_username,$db_password);
+$req = "insert into user values ('$id','$login','$password','$firstname','$lastname','$email','$img','$idr')";
+$tab = LireDonneesPDO1($conn,$req);
+
+	
+	
+	
+	
+	
+	
+ }

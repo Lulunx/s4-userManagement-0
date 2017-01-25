@@ -13,7 +13,8 @@ include("connection.php");
 <label for = "id">ID role : </label><input type = "text" name = "id" size = "40">&nbsp
 <label for = "name">Nom role : </label><input type = "text" name = "name" size = "40">
 </fieldset>
-<input type = "submit" size = "10" name = "EN"></br></hr>
+<input type = "submit" size = "10" name = "EN">
+<input type = "button" size = "10" name = "Retour" value="Retour" Onclick="javascript:location.href='index.php'" ></br></hr>
 </form></body>
 </html>
 
